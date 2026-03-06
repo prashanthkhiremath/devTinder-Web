@@ -20,10 +20,10 @@ function Body() {
       });
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.status === 401) {
+      if (err.response && err.response.status === 401) {
         navigate("/login");
       }
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -32,9 +32,17 @@ function Body() {
   }, []);
 
   return (
-    <div>
+    /* flex-col and min-h-screen keep the footer at the bottom */
+    <div className="flex flex-col min-h-screen bg-base-100 transition-colors duration-300">
       <NavBar />
-      <Outlet />
+
+      {/* flex-grow allows the Outlet to take up all available space.
+         pb-20 adds padding at the bottom so content isn't hidden by a fixed footer on mobile.
+      */}
+      <main className="flex-grow w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <Outlet />
+      </main>
+
       <Footer />
     </div>
   );
